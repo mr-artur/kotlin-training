@@ -58,7 +58,14 @@ object UserHolder {
         if (props.size != 5) {
             throw IllegalArgumentException("Incorrect number of user properties. Needed 5, but was ${props.size}")
         }
-        return User.makeUser(props[0]!!, props[1], null, props[4], props[3], props[2])
+        return User.makeUser(
+            props[0]!!,
+            if (props[1].isNotEmpty()) props[1] else null,
+            null,
+            props[3],
+            props[4],
+            props[2]
+        )
     }
 
     private fun String.isPhoneNumberValid(): Boolean {
