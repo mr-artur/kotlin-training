@@ -10,11 +10,11 @@ object UserHolder {
         email: String,
         password: String
     ): User {
-        if (users.containsKey(email)) {
+        if (users.containsKey(email.toLowerCase())) {
             throw IllegalArgumentException("A user with this email already exists")
         }
         return User.makeUser(fullName, email, password)
-            .also { users[email] = it }
+            .also { users[email.toLowerCase()] = it }
     }
 
     fun registerUserByPhone(
@@ -32,17 +32,31 @@ object UserHolder {
     }
 
     fun loginUser(login: String, password: String): String? {
-        return users[login.trim()]?.run {
+        return users[login.trim().toLowerCase()]?.run {
             if (checkPassword(password)) this.userInfo
             else null
         }
     }
 
-    fun requestAccessCode(login:String) {
+    fun requestAccessCode(login: String) {
         users[login]?.requestAccessCode()
     }
 
     fun clearHolder() = users.clear()
+
+    fun importUsers(usersList: List<String>): List<User> {
+        return usersList.map { parseUser(it) }
+            .toList()
+    }
+
+    fun parseUser(str: String): User {
+        val delimiter = ";"
+        val props = str.split(delimiter).map { if (it.isNotEmpty()) it else "" }
+        if (props.size != 5) {
+            throw IllegalArgumentException("Incorrect number of user properties. Needed 5, but was ${props.size}")
+        }
+        return User.makeUser(props[0]!!, props[1], null, props[4], props[3], props[2])
+    }
 
     private fun String.isPhoneNumberValid(): Boolean {
         return (first() == '+') and containsDigits(11)

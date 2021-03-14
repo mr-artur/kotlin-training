@@ -37,9 +37,7 @@ class User private constructor(
         }
         get() = _login!!
 
-    private val salt: String by lazy {
-        ByteArray(16).also { SecureRandom().nextBytes(it) }.toString()
-    }
+    private var salt: String = ByteArray(16).also { SecureRandom().nextBytes(it) }.toString()
     private lateinit var passwordHash: String
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
@@ -65,13 +63,34 @@ class User private constructor(
         sendAccessCodeToUser(phone, code)
     }
 
+    constructor(
+        firstName: String,
+        lastName: String?,
+        email: String?,
+        salt: String,
+        passwordHash: String,
+        rawPhone: String?
+    ) : this(firstName, lastName, email, rawPhone, mapOf("src" to "csv")) {
+        println("Secondary csv constructor")
+        this.salt = salt
+        this.passwordHash = passwordHash
+    }
+
     init {
         println("First init block, primary constructor was called")
 
 //        check(!firstName.isBlank()) { "FirstName must not be blank" }
 //        check(email.isNullOrBlank() || rawPhone.isNullOrBlank()) { "Email or phone must not be blank" }
 
-        login = email ?: ""
+        rawPhone?.run {
+            if (isNotEmpty()) {
+                phone = this
+                login = phone!!
+            }
+        }
+        email?.run {
+            login = this
+        }
 
         userInfo = """
             firstName: $firstName
@@ -129,17 +148,27 @@ class User private constructor(
             fullName: String,
             email: String? = null,
             password: String? = null,
-            phone: String? = null
+            phone: String? = null,
+            passwordHash: String? = null,
+            salt: String? = null
         ): User {
             val (firstName, lastName) = fullName.fullNameToPair()
 
             return when {
+                passwordHash != null && salt != null -> User(
+                    firstName,
+                    lastName,
+                    email,
+                    salt,
+                    passwordHash,
+                    phone
+                )
                 !phone.isNullOrBlank() -> User(firstName, lastName, rawPhone = phone)
                 !email.isNullOrBlank() and !password.isNullOrBlank() -> User(
                     firstName,
                     lastName,
-                    email,
-                    password
+                    email = email!!,
+                    password = password!!
                 )
                 else -> throw IllegalArgumentException("Email or phone must not be null or blank")
             }
