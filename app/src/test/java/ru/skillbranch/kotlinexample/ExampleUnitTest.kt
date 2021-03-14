@@ -211,6 +211,6 @@ class ExampleUnitTest {
             meta: {src=csv}
         """.trimIndent()
 
-        Assert.assertEquals(expectedInfo, users[0].userInfo)
+        Assert.assertEquals(expectedInfo, users[0])
     }
 }

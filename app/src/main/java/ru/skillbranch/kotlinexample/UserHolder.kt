@@ -46,9 +46,9 @@ object UserHolder {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun clearHolder() = users.clear()
 
-    fun importUsers(usersList: List<String>): List<User> {
+    fun importUsers(usersList: List<String>): List<String> {
         println("UserHolder.importUsers - usersList: $usersList")
-        return usersList.map { parseUser(it) }
+        return usersList.map { parseUser(it).userInfo }
             .toList()
     }
 
