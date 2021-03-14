@@ -46,9 +46,9 @@ object UserHolder {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun clearHolder() = users.clear()
 
-    fun importUsers(usersList: List<String>): List<String> {
+    fun importUsers(usersList: List<String>): List<User> {
         println("UserHolder.importUsers - usersList: $usersList")
-        return usersList.map { parseUser(it).userInfo }
+        return usersList.map { parseUser(it) }
             .toList()
     }
 
@@ -59,12 +59,12 @@ object UserHolder {
             throw IllegalArgumentException("Incorrect number of user properties. Needed 5, but was ${props.size}")
         }
         return User.makeUser(
-            props[0]!!,
+            props[0],
             if (props[1].isNotEmpty()) props[1] else null,
             null,
             props[3],
-            props[4],
-            props[2]
+            props[2].split(":")[1],
+            props[2].split(":")[0]
         )
     }
 

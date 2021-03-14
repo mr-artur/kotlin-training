@@ -198,7 +198,7 @@ class ExampleUnitTest {
 
     @Test
     fun importUsers() {
-        val users = UserHolder.importUsers(listOf("  John;;[B@77a567e1:a07e337973f9ab704118c73ff827a695;+7 (900) 971-11-11;"))
+        val users = UserHolder.importUsers(listOf( "John    Doe ;JohnDoe@list.ru;[B@7591083d:c6adb4becdc64e92857e1e2a0fd6af84;;","  John;;[B@77a567e1:a07e337973f9ab704118c73ff827a695;+7 (900) 971-11-11;"))
 
         val expectedInfo = """
             firstName: John
