@@ -33,6 +33,7 @@ object UserHolder {
     }
 
     fun loginUser(login: String, password: String): String? {
+        println("login : $login, password: $password")
         return users[login.trim().toLowerCase()]?.run {
             if (checkPassword(password)) this.userInfo
             else null
