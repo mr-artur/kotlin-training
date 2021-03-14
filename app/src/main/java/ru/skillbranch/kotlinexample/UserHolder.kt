@@ -47,6 +47,7 @@ object UserHolder {
     fun clearHolder() = users.clear()
 
     fun importUsers(usersList: List<String>): List<User> {
+        println("UserHolder.importUsers - usersList: $usersList")
         return usersList.map { parseUser(it) }
             .toList()
     }

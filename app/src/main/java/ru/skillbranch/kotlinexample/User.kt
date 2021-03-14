@@ -74,6 +74,7 @@ class User private constructor(
         println("Secondary csv constructor")
         this.salt = salt
         this.passwordHash = passwordHash
+        println("secondary csv constructor end")
     }
 
     init {
@@ -88,10 +89,11 @@ class User private constructor(
                 login = phone!!
             }
         }
+        println("First init block, after rawPhone")
         email?.run {
             login = this
         }
-
+        println("First init block, after email")
         userInfo = """
             firstName: $firstName
             lastName: $lastName
@@ -102,6 +104,7 @@ class User private constructor(
             phone: $phone
             meta: $meta
         """.trimIndent()
+        println("First init block, after userInfo, $userInfo")
     }
 
     fun checkPassword(pass: String) = encrypt(pass) == passwordHash
