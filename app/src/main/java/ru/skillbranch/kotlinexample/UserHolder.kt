@@ -49,6 +49,7 @@ object UserHolder {
     fun importUsers(usersList: List<String>): List<User> {
         println("UserHolder.importUsers - usersList: $usersList")
         return usersList.map { parseUser(it) }
+            .onEach { users[it.login] = it }
             .toList()
     }
 
