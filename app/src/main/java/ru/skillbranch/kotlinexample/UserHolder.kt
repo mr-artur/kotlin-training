@@ -1,5 +1,6 @@
 package ru.skillbranch.kotlinexample
 
+import androidx.annotation.VisibleForTesting
 import java.lang.IllegalArgumentException
 
 object UserHolder {
@@ -42,6 +43,7 @@ object UserHolder {
         users[login]?.requestAccessCode()
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun clearHolder() = users.clear()
 
     fun importUsers(usersList: List<String>): List<User> {
