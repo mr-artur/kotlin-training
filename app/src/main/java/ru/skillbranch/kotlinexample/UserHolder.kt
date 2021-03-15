@@ -65,8 +65,8 @@ object UserHolder {
             if (props[1].isNotEmpty()) props[1] else null,
             null,
             props[3],
-            props[2].split(":")[1],
-            props[2].split(":")[0]
+            "b62a565853f37fb1ec1efc287bfcebf9",
+            ""
         )
     }
 

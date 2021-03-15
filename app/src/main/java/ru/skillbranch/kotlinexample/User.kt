@@ -107,7 +107,10 @@ class User private constructor(
         println("First init block, after userInfo, $userInfo")
     }
 
-    fun checkPassword(pass: String) = encrypt(pass) == passwordHash
+    fun checkPassword(pass: String): Boolean {
+        val encryptedPass = encrypt(pass)
+        return encryptedPass == passwordHash
+    }
 
     fun changePassword(oldPass: String, newPass: String) {
         if (checkPassword(oldPass)) passwordHash = encrypt(newPass)

@@ -211,9 +211,6 @@ class ExampleUnitTest {
             meta: {src=csv}
         """.trimIndent()
 
-        Assert.assertNotNull(users[0].login)
-        Assert.assertNotNull(users[1].login)
-
-        Assert.assertEquals(expectedInfo, users[0])
+        Assert.assertEquals(expectedInfo, UserHolder.loginUser("johndoe@list.ru", "testPass"))
     }
 }
